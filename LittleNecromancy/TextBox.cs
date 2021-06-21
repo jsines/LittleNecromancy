@@ -11,11 +11,13 @@ namespace LittleNecromancy
     {
         public SpriteFont font;
         public string text;
+        public Color color;
 
-        public TextBox(string fontFile, string displayText)
+        public TextBox(string fontFile, string displayText, Color displayColor)
         {
             font = LittleNecromancy.resourceManager.GetSpriteFont(fontFile);
             text = displayText;
+            color = displayColor;
         }
         public virtual void Initialize()
         {

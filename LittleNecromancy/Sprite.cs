@@ -8,6 +8,10 @@ namespace LittleNecromancy
     class Sprite : Entity
     {
         public Texture2D texture;
+        public Sprite(string textureFile)
+        {
+            texture = LittleNecromancy.resourceManager.GetTexture(textureFile);
+        }
 
     }
 }

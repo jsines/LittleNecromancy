@@ -23,6 +23,7 @@ namespace LittleNecromancy
 
         public void Update(GameTime gameTime)
         {
+            UpdateState();
             List<string> removalList = new List<string>();
             List<string> keys = new List<string>(_stateEntities.Keys);
             foreach(string key in keys)
@@ -81,7 +82,7 @@ namespace LittleNecromancy
                 }
                 else if (textBox != null)
                 {
-                    sb.DrawString(textBox.font, textBox.text, textBox.position, Color.White);
+                    sb.DrawString(textBox.font, textBox.text, textBox.position, textBox.color);
                 }
                 else if (aSprite != null)
                 {
@@ -90,6 +91,7 @@ namespace LittleNecromancy
             }
             sb.End();
         }
+        public virtual void UpdateState() { }
 
         public void AddEntity(String name, Entity e)
         {
@@ -105,5 +107,6 @@ namespace LittleNecromancy
         {
             _stateEntities[name].dead = true;
         }
+
     } 
 }
