@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31402.337
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LittleNecromancy", "LittleNecromancy\LittleNecromancy.csproj", "{DA8C0619-3000-438F-909C-8C0869006034}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DA8C0619-3000-438F-909C-8C0869006034}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA8C0619-3000-438F-909C-8C0869006034}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA8C0619-3000-438F-909C-8C0869006034}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA8C0619-3000-438F-909C-8C0869006034}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F7188BC1-146C-4941-9474-6A6D8387E8C1}
+	EndGlobalSection
+EndGlobal
