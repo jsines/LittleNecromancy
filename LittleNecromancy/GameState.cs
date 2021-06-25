@@ -10,6 +10,7 @@ namespace LittleNecromancy
     class GameState
     {
         private Dictionary<string, Entity> _stateEntities;
+        public Vector2 cameraPosition;
 
         public GameState()
         {
@@ -73,17 +74,18 @@ namespace LittleNecromancy
                 Sprite sprite = e as Sprite;
                 TextBox textBox = e as TextBox;
                 AnimatedSprite aSprite = e as AnimatedSprite;
+                Vector2 offset = cameraPosition;
                 if(sprite != null)
                 {
-                    sb.Draw(sprite.texture, sprite.GetPosition(), null, Color.White);
+                    sb.Draw(sprite.texture, sprite.GetPosition() - offset, null, Color.White);
                 }
                 else if (textBox != null)
                 {
-                    sb.DrawString(textBox.font, textBox.text, textBox.GetPosition(), textBox.color);
+                    sb.DrawString(textBox.font, textBox.text, textBox.GetPosition() - offset, textBox.color);
                 }
                 else if (aSprite != null)
                 {
-                    sb.Draw(aSprite.spriteSheet, aSprite.GetPosition(), aSprite.srcRec, Color.White);
+                    sb.Draw(aSprite.spriteSheet, aSprite.GetPosition() - offset, aSprite.srcRec, Color.White);
                 }
             }
             sb.End();

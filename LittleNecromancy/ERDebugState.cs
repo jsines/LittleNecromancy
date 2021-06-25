@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -74,6 +75,11 @@ namespace LittleNecromancy
 
         public override void Update(GameTime gameTime)
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.W)) cameraPosition -= Vector2.UnitY*4;
+            if (Keyboard.GetState().IsKeyDown(Keys.S)) cameraPosition += Vector2.UnitY*4;
+            if (Keyboard.GetState().IsKeyDown(Keys.A)) cameraPosition -= Vector2.UnitX*4;
+            if (Keyboard.GetState().IsKeyDown(Keys.D)) cameraPosition += Vector2.UnitX*4;
+
         }
     }
 }

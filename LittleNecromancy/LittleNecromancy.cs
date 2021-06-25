@@ -15,6 +15,8 @@ namespace LittleNecromancy
     }
     public class LittleNecromancy : Game
     {
+        public const int SCREEN_WIDTH = 1280;
+        public const int SCREEN_HEIGHT = 720;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private GameStateStack _gameStateStack;
@@ -32,8 +34,8 @@ namespace LittleNecromancy
         // After constructor and before main game loop
         protected override void Initialize()
         {
-            _graphics.PreferredBackBufferWidth = 1280;
-            _graphics.PreferredBackBufferHeight = 720;
+            _graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
+            _graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             _graphics.ApplyChanges();
             _gameStateStack.Push(new MenuState());
             base.Initialize();
