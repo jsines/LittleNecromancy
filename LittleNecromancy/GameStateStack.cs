@@ -31,7 +31,7 @@ namespace LittleNecromancy
 
         public void Update(GameTime gameTime)
         {
-            _stateStack.Peek().Update(gameTime);
+            _stateStack.Peek().UpdateState(gameTime);
         }
 
         public void Draw(SpriteBatch sb, GameTime gt)

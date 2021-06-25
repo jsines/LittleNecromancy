@@ -21,9 +21,9 @@ namespace LittleNecromancy
 
         }
 
-        public void Update(GameTime gameTime)
+        public void UpdateState(GameTime gameTime)
         {
-            UpdateState();
+            Update(gameTime);
             List<string> removalList = new List<string>();
             List<string> keys = new List<string>(_stateEntities.Keys);
             foreach(string key in keys)
@@ -53,7 +53,7 @@ namespace LittleNecromancy
             foreach (KeyValuePair<String, Entity> kvp in _stateEntities)
             {
                 Entity e = kvp.Value;
-                if (!e.dead && e.position != null)
+                if (!e.dead && e.GetPosition() != null)
                 {
                     Sprite sprite = e as Sprite;
                     TextBox textBox = e as TextBox;
@@ -78,20 +78,20 @@ namespace LittleNecromancy
                 AnimatedSprite aSprite = e as AnimatedSprite;
                 if(sprite != null)
                 {
-                    sb.Draw(sprite.texture, sprite.position, null, Color.White);
+                    sb.Draw(sprite.texture, sprite.GetPosition(), null, Color.White);
                 }
                 else if (textBox != null)
                 {
-                    sb.DrawString(textBox.font, textBox.text, textBox.position, textBox.color);
+                    sb.DrawString(textBox.font, textBox.text, textBox.GetPosition(), textBox.color);
                 }
                 else if (aSprite != null)
                 {
-                    sb.Draw(aSprite.spriteSheet, aSprite.position, aSprite.srcRec, Color.White);
+                    sb.Draw(aSprite.spriteSheet, aSprite.GetPosition(), aSprite.srcRec, Color.White);
                 }
             }
             sb.End();
         }
-        public virtual void UpdateState() { }
+        public virtual void Update(GameTime gameTime) { }
 
         public void AddEntity(String name, Entity e)
         {
@@ -105,7 +105,9 @@ namespace LittleNecromancy
         }
         public void DestroyEntity(String name)
         {
-            _stateEntities[name].dead = true;
+            Entity e = _stateEntities[name];
+            e.dead = true;
+            e.GetParent().RemoveChild(e);
         }
 
     } 
