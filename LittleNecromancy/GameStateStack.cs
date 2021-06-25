@@ -20,13 +20,16 @@ namespace LittleNecromancy
         {
             g.Initialize();
             _stateStack.Push(g);
-            System.Diagnostics.Debug.WriteLine("Pushed new state to stack");
         }
 
         public void Pop()
         {
             _stateStack.Pop();
-            System.Diagnostics.Debug.WriteLine("Popped new state from stack");
+        }
+
+        public GameState GetCurrentState()
+        {
+            return _stateStack.Peek();
         }
 
         public void Update(GameTime gameTime)

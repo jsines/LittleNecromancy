@@ -6,6 +6,13 @@ using System.Collections.Generic;
 
 namespace LittleNecromancy
 {
+    public class LN //logger
+    {
+        public static void Log(string s)
+        {
+            System.Diagnostics.Debug.WriteLine(s);
+        }
+    }
     public class LittleNecromancy : Game
     {
         private GraphicsDeviceManager _graphics;
@@ -38,14 +45,23 @@ namespace LittleNecromancy
             _spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
+        private float tick = 2000;
+        private float delta;
+        private const float gap = 2000;
         protected override void Update(GameTime gameTime)
         {
+            delta = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
+            tick += delta;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Exit();
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.F3) && tick >= gap)
+            {
+                _gameStateStack.Push(new ERDebugState(_gameStateStack.GetCurrentState().GetEntities()));
+                tick = 0;
+            }
             _gameStateStack.Update(gameTime);
-
             base.Update(gameTime);
         }
 

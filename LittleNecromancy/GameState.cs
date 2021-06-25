@@ -15,11 +15,8 @@ namespace LittleNecromancy
         {
             _stateEntities = new Dictionary<string, Entity>();
         }
-
-        public virtual void Initialize()
-        {
-
-        }
+        public virtual void Initialize() { }
+        public virtual void Update(GameTime gameTime) { }
 
         public void UpdateState(GameTime gameTime)
         {
@@ -91,13 +88,11 @@ namespace LittleNecromancy
             }
             sb.End();
         }
-        public virtual void Update(GameTime gameTime) { }
 
         public void AddEntity(String name, Entity e)
         {
             _stateEntities[name] = e;
             e.Initialize();
-            System.Diagnostics.Debug.WriteLine("Added Entity", name);
         }
         public Entity GetEntity(String name)
         {
@@ -109,6 +104,9 @@ namespace LittleNecromancy
             e.dead = true;
             e.GetParent().RemoveChild(e);
         }
-
-    } 
+        public Dictionary<string, Entity> GetEntities()
+        {
+            return _stateEntities;
+        }
+    }
 }

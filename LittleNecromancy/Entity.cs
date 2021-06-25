@@ -12,8 +12,7 @@ namespace LittleNecromancy
         private static int idCounter = 1;
         static int generateID() { return idCounter++; }
         public int id;
-        private Vector2 worldPosition;
-        private Vector2 localPosition;
+        private Vector2 position;
         private Entity parent = null;
         private List<Entity> children;
         public float z;
@@ -36,28 +35,23 @@ namespace LittleNecromancy
 
         public void SetPosition(Vector2 newPosition)
         {
-            if(parent == null)
-            {
-                worldPosition = newPosition;
-            }
-            else
-            {
-                localPosition = newPosition;
-            }
+            position = newPosition;
         }
         public Vector2 GetPosition()
         {
-            if(parent == null)
+            if (parent == null)
             {
-                return worldPosition;
+                return position;
             }
             else
             {
-                return parent.GetPosition() + localPosition;
+                return parent.GetPosition() + position;
             }
         }
         public void SetParent(Entity e)
         {
+            if (parent != null)
+                parent.RemoveChild(e);
             parent = e;
             e.AddChild(this);
         }
@@ -67,6 +61,9 @@ namespace LittleNecromancy
         }
         public void AddChild(Entity e)
         {
+            if (e.parent != null)
+                e.parent.RemoveChild(e);
+            e.parent = this;
             children.Add(e);
         }
         public void RemoveChild(Entity e)

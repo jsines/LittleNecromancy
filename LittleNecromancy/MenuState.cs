@@ -19,13 +19,11 @@ namespace LittleNecromancy
             box.SetPosition(new Vector2(1, 0));
             box.z = 1;
             AddEntity("box", box);
-            System.Diagnostics.Debug.WriteLine("Added box");
 
             anim = new AnimatedSprite("testanimation", 3, 250);
             anim.SetPosition(new Vector2(500, 500));
             anim.z = 4;
             AddEntity("testanimation", anim);
-            System.Diagnostics.Debug.WriteLine("Added anim");
 
             titleText = new TextBox("rainy", "Hello World", Color.Black);
             titleText.z = 3;
