@@ -60,11 +60,11 @@ namespace LittleNecromancy
                     Sprite box = new Sprite(boxSpriteFile);
                     box.SetParent(container);
                     box.SetPosition(new Vector2(runningX, runningY));
-                    box.z = 1;
+                    box.SetZ(1);
                     TextBox name = new TextBox("rainy", kvp.Key, Color.Black);
                     name.SetParent(box);
                     name.SetPosition(new Vector2(1, 1));
-                    name.z = 2;
+                    name.SetZ(2);
                     AddEntity(String.Concat("box", kvp.Key), box);
                     AddEntity(String.Concat("name", kvp.Key), name);
                     runningX += xGap;

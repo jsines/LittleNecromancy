@@ -13,9 +13,9 @@ namespace LittleNecromancy
         static int generateID() { return idCounter++; }
         public int id;
         private Vector2 position;
+        private float z;
         private Entity parent = null;
         private List<Entity> children;
-        public float z;
         public bool dead = false;
 
 
@@ -48,12 +48,27 @@ namespace LittleNecromancy
                 return parent.GetPosition() + position;
             }
         }
+        public void SetZ(float newZ)
+        {
+            z = newZ;
+        }
+        public float GetZ()
+        {
+            if(parent == null)
+            {
+                return z;
+            }
+            else
+            {
+                return parent.GetZ() + z;
+            }
+        }
         public void SetParent(Entity e)
         {
             if (parent != null)
                 parent.RemoveChild(e);
             parent = e;
-            e.AddChild(this);
+            e.children.Add(this);
         }
         public Entity GetParent()
         {

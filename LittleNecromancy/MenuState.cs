@@ -17,16 +17,16 @@ namespace LittleNecromancy
         {
             box = new Sprite("titleText");
             box.SetPosition(new Vector2(1, 0));
-            box.z = 1;
+            box.SetZ(1);
             AddEntity("box", box);
 
             anim = new AnimatedSprite("testanimation", 3, 250);
             anim.SetPosition(new Vector2(500, 500));
-            anim.z = 4;
+            anim.SetZ(4);
             AddEntity("testanimation", anim);
 
             titleText = new TextBox("rainy", "Hello World", Color.Black);
-            titleText.z = 3;
+            titleText.SetZ(4);
             titleText.SetParent(box);
             titleText.SetPosition(new Vector2(10, 50));
             AddEntity("titletext", titleText);

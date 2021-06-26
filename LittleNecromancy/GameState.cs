@@ -67,7 +67,7 @@ namespace LittleNecromancy
                     }
                 }
             }
-            entityList.Sort((x, y) => x.z.CompareTo(y.z)); // In place sort
+            entityList.Sort((x, y) => x.GetZ().CompareTo(y.GetZ())); // In place sort
             sb.Begin();
             foreach(Entity e in entityList)
             {
