@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace LittleNecromancy
 {
-    public class LN //logger
+    public class LN //macros basically, wish c# had them lol
     {
         public static void Log(string s)
         {
@@ -19,9 +19,9 @@ namespace LittleNecromancy
         public const int SCREEN_HEIGHT = 720;
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private GameStateStack _gameStateStack;
+        public static GameStateStack Stack;
         public static ResourceManager Resource;
-        public static InputManager Input;
+        public static bool Exit = false;
 
         public LittleNecromancy()
         {
@@ -29,8 +29,7 @@ namespace LittleNecromancy
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             Resource = new ResourceManager(Content);
-            Input = new InputManager();
-            _gameStateStack = new GameStateStack();
+            Stack = new GameStateStack();
         }
 
         // After constructor and before main game loop
@@ -39,7 +38,7 @@ namespace LittleNecromancy
             _graphics.PreferredBackBufferWidth = SCREEN_WIDTH;
             _graphics.PreferredBackBufferHeight = SCREEN_HEIGHT;
             _graphics.ApplyChanges();
-            _gameStateStack.Push(new MenuState());
+            Stack.Push(new MenuState());
             base.Initialize();
         }
 
@@ -54,19 +53,11 @@ namespace LittleNecromancy
         private const float gap = 2000;
         protected override void Update(GameTime gameTime)
         {
-            delta = (float) gameTime.ElapsedGameTime.TotalMilliseconds;
-            tick += delta;
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Exit)
             {
                 Exit();
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && tick >= gap)
-            {
-                _gameStateStack.Push(new ERDebugState(_gameStateStack.GetCurrentState().GetEntities()));
-                tick = 0;
-            }
-            Input.Update();
-            _gameStateStack.Update(gameTime);
+            Stack.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -74,7 +65,7 @@ namespace LittleNecromancy
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
            
-            _gameStateStack.Draw(_spriteBatch, gameTime);
+            Stack.Draw(_spriteBatch, gameTime);
 
             base.Draw(gameTime);
         }

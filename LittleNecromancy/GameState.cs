@@ -7,20 +7,26 @@ using Microsoft.Xna.Framework.Input;
 
 namespace LittleNecromancy
 {
-    class GameState
+    public class GameState
     {
         private Dictionary<string, Entity> _stateEntities;
-        public Vector2 cameraPosition;
+        protected InputManager Input;
+        protected TimeManager Timer;
+        public Vector2 cameraPosition = Vector2.Zero;
 
         public GameState()
         {
             _stateEntities = new Dictionary<string, Entity>();
+            Input = new InputManager();
+            Timer = new TimeManager();
         }
         public virtual void Initialize() { }
         public virtual void Update(GameTime gameTime) { }
 
         public void UpdateState(GameTime gameTime)
         {
+            Input.Update();
+            Timer.Update(gameTime);
             Update(gameTime);
             List<string> removalList = new List<string>();
             List<string> keys = new List<string>(_stateEntities.Keys);
@@ -58,7 +64,7 @@ namespace LittleNecromancy
                     AnimatedSprite aSprite = e as AnimatedSprite;
 
                     bool renderableSprite = (sprite != null && sprite.texture != null);
-                    bool renderableText = (textBox != null && textBox.font != null);
+                    bool renderableText = (textBox != null && textBox.GetFont() != null);
                     bool renderableAnimation = (aSprite != null && aSprite.spriteSheet != null);
 
                     if (renderableSprite || renderableText || renderableAnimation)
@@ -77,15 +83,15 @@ namespace LittleNecromancy
                 Vector2 offset = cameraPosition;
                 if(sprite != null)
                 {
-                    sb.Draw(sprite.texture, sprite.GetPosition() - offset, null, Color.White);
+                    sb.Draw(sprite.texture, sprite.GetPosition() - offset, null, Color.White * sprite.GetAlpha());
                 }
                 else if (textBox != null)
                 {
-                    sb.DrawString(textBox.font, textBox.text, textBox.GetPosition() - offset, textBox.color);
+                    sb.DrawString(textBox.GetFont(), textBox.GetText(), textBox.GetPosition() - offset, textBox.GetColor() * textBox.GetAlpha());
                 }
                 else if (aSprite != null)
                 {
-                    sb.Draw(aSprite.spriteSheet, aSprite.GetPosition() - offset, aSprite.srcRec, Color.White);
+                    sb.Draw(aSprite.spriteSheet, aSprite.GetPosition() - offset, aSprite.srcRec, Color.White * sprite.GetAlpha());
                 }
             }
             sb.End();

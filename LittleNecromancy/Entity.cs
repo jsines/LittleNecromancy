@@ -7,13 +7,14 @@ using Microsoft.Xna.Framework.Input;
 
 namespace LittleNecromancy
 {
-    class Entity
+    public class Entity
     {
         private static int idCounter = 1;
         static int generateID() { return idCounter++; }
         public int id;
         private Vector2 position;
         private float z;
+        private float alpha = 1f;
         private Entity parent = null;
         private List<Entity> children;
         public bool dead = false;
@@ -62,6 +63,14 @@ namespace LittleNecromancy
             {
                 return parent.GetZ() + z;
             }
+        }
+        public void SetAlpha(float f)
+        {
+            alpha = f;
+        }
+        public float GetAlpha()
+        {
+            return alpha;
         }
         public void SetParent(Entity e)
         {

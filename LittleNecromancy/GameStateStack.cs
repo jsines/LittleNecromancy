@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace LittleNecromancy
 {
-    class GameStateStack
+    public class GameStateStack
     {
         Stack<GameState> _stateStack;
 
