@@ -16,7 +16,7 @@ namespace LittleNecromancy
 
         public AnimatedSprite(string spriteSheetFile, int frames, int msBetweenFrames)
         {
-            spriteSheet = LittleNecromancy.resourceManager.GetTexture(spriteSheetFile);
+            spriteSheet = LittleNecromancy.Resource.GetTexture(spriteSheetFile);
             animation = new AnimationComponent(spriteSheet.Width, spriteSheet.Height / frames, frames, msBetweenFrames);
             srcRec = animation.GetFrameRec();
         }

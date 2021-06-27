@@ -20,14 +20,16 @@ namespace LittleNecromancy
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private GameStateStack _gameStateStack;
-        public static ResourceManager resourceManager;
+        public static ResourceManager Resource;
+        public static InputManager Input;
 
         public LittleNecromancy()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            resourceManager = new ResourceManager(Content);
+            Resource = new ResourceManager(Content);
+            Input = new InputManager();
             _gameStateStack = new GameStateStack();
         }
 
@@ -63,6 +65,7 @@ namespace LittleNecromancy
                 _gameStateStack.Push(new ERDebugState(_gameStateStack.GetCurrentState().GetEntities()));
                 tick = 0;
             }
+            Input.Update();
             _gameStateStack.Update(gameTime);
             base.Update(gameTime);
         }

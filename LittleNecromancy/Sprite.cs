@@ -10,7 +10,7 @@ namespace LittleNecromancy
         public Texture2D texture;
         public Sprite(string textureFile)
         {
-            texture = LittleNecromancy.resourceManager.GetTexture(textureFile);
+            texture = LittleNecromancy.Resource.GetTexture(textureFile);
         }
 
     }

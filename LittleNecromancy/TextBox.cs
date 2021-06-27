@@ -15,7 +15,7 @@ namespace LittleNecromancy
 
         public TextBox(string fontFile, string displayText, Color displayColor)
         {
-            font = LittleNecromancy.resourceManager.GetSpriteFont(fontFile);
+            font = LittleNecromancy.Resource.GetSpriteFont(fontFile);
             text = displayText;
             color = displayColor;
         }

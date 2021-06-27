@@ -27,23 +27,24 @@ namespace LittleNecromancy
 
             titleText = new TextBox("rainy", "Hello World", Color.Black);
             titleText.SetZ(4);
-            titleText.SetParent(box);
+            titleText.SetParent(anim);
             titleText.SetPosition(new Vector2(10, 50));
             AddEntity("titletext", titleText);
 
+            LittleNecromancy.Input.AddKeyPressHandler(Keys.W, delegate () { move(0, -20); });
+            LittleNecromancy.Input.AddKeyPressHandler(Keys.S, delegate () { move(0, 20); });
+            LittleNecromancy.Input.AddKeyPressHandler(Keys.A, delegate () { move(-20, 0); });
+            LittleNecromancy.Input.AddKeyPressHandler(Keys.D, delegate () { move(20, 0); });
         }
 
 
         public override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-                box.SetPosition(box.GetPosition() + new Vector2(0, -5));
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-                box.SetPosition(box.GetPosition() + new Vector2(0, 5));
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-                box.SetPosition(box.GetPosition() + new Vector2(-5, 0));
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-                box.SetPosition(box.GetPosition() + new Vector2(5, 0));
+            
+        }
+        private void move(int i, int j)
+        {
+            box.SetPosition(box.GetPosition() + new Vector2(i, j));
         }
     }
 }
