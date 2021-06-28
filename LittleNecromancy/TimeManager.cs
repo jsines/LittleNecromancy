@@ -7,49 +7,79 @@ namespace LittleNecromancy
 {
     public class TimeManager
     {
-        Dictionary<string, Action> repeatedActions;
-        List<(double, Action, Action)> expirableActions;
+        struct ExpirableTimer
+        {
+            public double msUntil;
+            public double msSince;
+            public Action<double, double> repeatedAction; // arguments are msSince and deltaTime
+            public Action callback;
+        }
+        struct RepeatableTimer
+        {
+            public double msSince;
+            public Action<double, double> repeatedAction;
+        }
+        List<RepeatableTimer> repeatedTimers; // arguments are msSince and deltaTime
+        List<ExpirableTimer> expirableTimers;
         public TimeManager()
         {
-            repeatedActions = new Dictionary<string, Action>();
-            expirableActions = new List<(double, Action, Action)>();
+            repeatedTimers = new List<RepeatableTimer>();
+            expirableTimers = new List<ExpirableTimer>();
         }
 
-        public void AddRepeatedHandler(string name, Action action)
+        public void AddRepeatedHandler(Action<double, double> action)
         {
-            if (repeatedActions[name] != null)
-                LN.Log(String.Format("ERROR: Tried to add a handler with a duplicate name! {0}", name));
-            else
-                repeatedActions[name] = action;
+            RepeatableTimer rt;
+            rt.msSince = 0;
+            rt.repeatedAction = action;
+            repeatedTimers.Add(rt);
         }
-        public void AddExpirableHandler(double lifeSpan, Action action, Action callback = null)
+        public void AddExpirableHandler(double msLifeSpan, Action<double, double> action, Action callback = null)
         {
-            expirableActions.Add((lifeSpan, action, callback));
+            ExpirableTimer et;
+            et.msUntil = msLifeSpan;
+            et.msSince = 0;
+            et.repeatedAction = action;
+            et.callback = callback;
+            expirableTimers.Add(et);
         }
         public void Update(GameTime gameTime)
         {
             double gap = gameTime.ElapsedGameTime.TotalMilliseconds;
-            
+            UpdateExpirables(gap);
+            UpdateRepeatables(gap);
         }
         public void UpdateExpirables(double dt)
         {
-            List<(double, Action, Action)> newList = new List<(double, Action, Action)>();
-            foreach(var x in expirableActions)
+            int count = expirableTimers.Count;
+            for (int i = 0; i < count; i++)
             {
-                x.Item2();
-                var y = x; // foreach makes x members nonmutable, this is hacky but it works :p
-                newList.Add((y.Item1 -= dt, y.Item2, y.Item3));
+                ExpirableTimer et = expirableTimers[i];
+                et.msUntil -= dt;
+                et.msSince += dt;
+                et.repeatedAction(et.msSince, dt);
+                expirableTimers[i] = et;
             }
-            int count = newList.Count;
             for (int i = count - 1; i >= 0; i--)
             {
-                if(expirableActions[i].Item1 <= 0)
+                ExpirableTimer et = expirableTimers[i];
+                if(et.msUntil <= 0)
                 {
-                    expirableActions[i].Item3();
-                    expirableActions.RemoveAt(i);
+                    if(et.callback != null) et.callback();
+                    expirableTimers.RemoveAt(i);
                 }
             }
-
+        }
+        public void UpdateRepeatables(double dt)
+        {
+            int count = repeatedTimers.Count;
+            for(int i = 0; i < count; i++)
+            {
+                RepeatableTimer rt = repeatedTimers[i];
+                rt.msSince += dt;
+                rt.repeatedAction(rt.msSince, dt);
+                repeatedTimers[i] = rt;
+            }
         }
     }
 }

@@ -34,12 +34,14 @@ namespace LittleNecromancy
 
         public void Update(GameTime gameTime)
         {
-            _stateStack.Peek().UpdateState(gameTime);
+            if(_stateStack.Count != 0)
+                _stateStack.Peek().UpdateState(gameTime);
         }
 
         public void Draw(SpriteBatch sb, GameTime gt)
         {
-            _stateStack.Peek().Draw(sb, gt);
+            if(_stateStack.Count != 0)
+                _stateStack.Peek().Draw(sb, gt);
         }
     }
 }

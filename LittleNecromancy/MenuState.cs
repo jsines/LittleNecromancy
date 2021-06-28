@@ -17,7 +17,7 @@ namespace LittleNecromancy
         TextBox exitButton;
         List<TextBox> buttons;
         public int cursorPosition = 0;
-        const float titleTextY = 100;
+
         public override void Initialize()
         {
             fade = new Sprite("fademask");
@@ -26,7 +26,7 @@ namespace LittleNecromancy
             AddEntity("fademask", fade);
 
             titleText = new TextBox("rainy", "Little Necromancy", Color.Black);
-            titleText.SetPosition(new Vector2(500, titleTextY));
+            titleText.SetPosition(new Vector2(500, 100));
             AddEntity("title", titleText);
 
             buttons = new List<TextBox>();
@@ -36,7 +36,7 @@ namespace LittleNecromancy
 
             playButton = new TextBox("rainy", "Play", Color.Yellow);
             playButton.SetParent(buttonsBox);
-            playButton.SetPosition(new Vector2(0, 0));
+            playButton.SetPosition(new Vector2(10, 0));
             buttons.Add(playButton);
             AddEntity("playButton", playButton);
 
@@ -52,6 +52,22 @@ namespace LittleNecromancy
             buttons.Add(exitButton);
             AddEntity("exitButton", exitButton);
 
+            InputSetup();
+            Timer.AddExpirableHandler(2000, delegate (double msSince, double dt)
+            {
+                double t = msSince / 2000;
+                fade.SetAlpha((float) (1 - Math.Pow(t, 4)));
+            });
+        }
+        
+        
+        public override void Update(GameTime gameTime)
+        {
+            
+
+        }
+        private void InputSetup()
+        {
             Input.AddKeyPressHandler(Keys.W, delegate () {
                 moveCursor(false);
             });
@@ -63,21 +79,25 @@ namespace LittleNecromancy
                 enterHandler(cursorPosition);
             });
         }
-        
-        public override void Update(GameTime gameTime)
-        {
-            float currentTime = (float)gameTime.TotalGameTime.TotalSeconds;            
-            if (fade.GetAlpha() > 0)
-                fade.SetAlpha(1 - (float)currentTime*currentTime);
-        }
-
         private void moveCursor(bool down)
         {
-            buttons[cursorPosition].SetColor(Color.Black);
+            TextBox oldtb = buttons[cursorPosition];
+            oldtb.SetColor(Color.Black);
+            Timer.AddExpirableHandler(500, delegate (double msSince, double dt)
+            {
+                double t = msSince / 500;
+                oldtb.SetX((float)(10 - 10 * (1 - Math.Pow(1 - t, 2))));
+            });
             int i = down ? 1 : -1;
             cursorPosition = ((cursorPosition + i) % 3);
             if (cursorPosition < 0) cursorPosition += 3;
-            buttons[cursorPosition].SetColor(Color.Yellow);
+            TextBox newtb = buttons[cursorPosition];
+            newtb.SetColor(Color.Yellow);
+            Timer.AddExpirableHandler(500, delegate (double msSince, double dt)
+            {
+                double t = msSince / 500;
+                newtb.SetX((float)(10 * (1 - Math.Pow(1 - t, 2))));
+            });
         }
 
         private void enterHandler(int cursorPosition)
@@ -85,7 +105,16 @@ namespace LittleNecromancy
             switch (cursorPosition)
             {
                 case 0:
-                    LittleNecromancy.Stack.Push(new ERDebugState(GetEntities()));
+                    Timer.AddExpirableHandler(2000, delegate (double msSince, double dt)
+                    {
+                        double x = msSince / 2000;
+                        fade.SetAlpha((float)(1 - Math.Pow((1-x), 3)));
+                    }, delegate ()
+                    {
+                        var x = GetEntities();
+                        LittleNecromancy.Stack.Pop();
+                        LittleNecromancy.Stack.Push(new ERDebugState(x));
+                    });
                     break;
                 case 2:
                     LittleNecromancy.Exit = true;

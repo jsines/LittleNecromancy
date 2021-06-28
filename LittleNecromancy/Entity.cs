@@ -49,6 +49,14 @@ namespace LittleNecromancy
                 return parent.GetPosition() + position;
             }
         }
+        public void SetX(float newX)
+        {
+            position.X = newX;
+        }
+        public void SetY(float newY)
+        {
+            position.Y = newY;
+        }
         public void SetZ(float newZ)
         {
             z = newZ;
