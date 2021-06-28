@@ -17,9 +17,14 @@ namespace LittleNecromancy
         TextBox exitButton;
         List<TextBox> buttons;
         public int cursorPosition = 0;
+        Sprite box;
 
         public override void Initialize()
         {
+            box = new Sprite("titletext");
+            box.SetPosition(Vector2.Zero);
+            AddEntity("box", box);
+
             fade = new Sprite("fademask");
             fade.SetPosition(cameraPosition);
             fade.SetZ(100);
@@ -78,6 +83,43 @@ namespace LittleNecromancy
             {
                 enterHandler(cursorPosition);
             });
+            Input.AddKeyPressHandler(Keys.J, delegate ()
+            {
+                moveBox(0);
+            });
+            Input.AddKeyPressHandler(Keys.K, delegate ()
+            {
+                moveBox(1);
+            });
+            Input.AddKeyPressHandler(Keys.L, delegate ()
+            {
+                moveBox(2);
+            });
+        }
+        private void moveBox(int i)
+        {
+            box.SetX(0);
+            Func<double, double> f;
+            switch (i)
+            {
+                case 0:
+                    f = Timer.Util.SmoothStepN(100);
+                    break;
+                case 1:
+                    f = Timer.Util.SmoothStepN2(100);
+                    break;
+                case 2:
+                    f = Timer.Util.SmootherStep();
+                    break;
+                default:
+                    f = Timer.Util.SmootherStep();
+                    break;
+            }
+            Timer.AddExpirableHandler(2000, delegate (double msSince, double dt)
+            {
+                double t = msSince / 2000;
+                box.SetX((1280-200) * (float)f(t));
+            });
         }
         private void moveCursor(bool down)
         {
@@ -86,7 +128,7 @@ namespace LittleNecromancy
             Timer.AddExpirableHandler(500, delegate (double msSince, double dt)
             {
                 double t = msSince / 500;
-                oldtb.SetX((float)(10 - 10 * (1 - Math.Pow(1 - t, 2))));
+                oldtb.SetX((float)(10 - 10 * Timer.Util.SmoothStopN(2)(t)));
             });
             int i = down ? 1 : -1;
             cursorPosition = ((cursorPosition + i) % 3);
@@ -96,7 +138,7 @@ namespace LittleNecromancy
             Timer.AddExpirableHandler(500, delegate (double msSince, double dt)
             {
                 double t = msSince / 500;
-                newtb.SetX((float)(10 * (1 - Math.Pow(1 - t, 2))));
+                newtb.SetX((float)(10 * Timer.Util.SmoothStopN(2)(t)));
             });
         }
 
@@ -107,8 +149,8 @@ namespace LittleNecromancy
                 case 0:
                     Timer.AddExpirableHandler(2000, delegate (double msSince, double dt)
                     {
-                        double x = msSince / 2000;
-                        fade.SetAlpha((float)(1 - Math.Pow((1-x), 3)));
+                        double t = msSince / 2000; // 0 to 1
+                        fade.SetAlpha((float)Timer.Util.SmoothStopN(3)(t));
                     }, delegate ()
                     {
                         var x = GetEntities();
@@ -117,7 +159,14 @@ namespace LittleNecromancy
                     });
                     break;
                 case 2:
-                    LittleNecromancy.Exit = true;
+                    Timer.AddExpirableHandler(1000, delegate (double msSince, double dt)
+                    {
+                        double t = msSince / 1000; // 0 to 1
+                        fade.SetAlpha((float)Timer.Util.SmoothStopN(3)(t));
+                    }, delegate ()
+                    {
+                        LittleNecromancy.Exit = true;
+                    });
                     break;
             }
         }

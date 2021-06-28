@@ -7,6 +7,7 @@ namespace LittleNecromancy
 {
     public class TimeManager
     {
+        public TimerUtilities Util;
         struct ExpirableTimer
         {
             public double msUntil;
@@ -25,6 +26,7 @@ namespace LittleNecromancy
         {
             repeatedTimers = new List<RepeatableTimer>();
             expirableTimers = new List<ExpirableTimer>();
+            Util = new TimerUtilities(this);
         }
 
         public void AddRepeatedHandler(Action<double, double> action)
